@@ -8,8 +8,8 @@ const registerUser = asyncHandler(async (req, res) => {
   //get user detail from frontend
   //validation - not empty length etc
   //check if user is already exixts
-  // check for ci and avatar  ------ not required
-  // upload them on cloudinary   -- not required
+  // check for ci and avatar   ------ not required
+  // upload them on cloudinary ------ not required
   // create user object in db
   // remove pasword and refreshToken field from created user object
   // check for user creation
@@ -22,13 +22,15 @@ const registerUser = asyncHandler(async (req, res) => {
   ) {
     throw new apiError(400, "All Fields Are Required");
   }
-  const existedUSer = User.findOne({
+  const existedUSer =await User.findOne({
     $or: [{ email }, { userName }],
   });
   if (existedUSer) {
     throw new apiError(409, "User Alreadfy registered");
   }
-  const avatarLocalPath = req.files?.avatar[0]?.path; //files **
+//   console.log(req.file);
+  const avatarLocalPath = req.file?.path; //files **
+  
   if (!avatarLocalPath) {
     throw new apiError(400, "avatar file is missing");
   }
