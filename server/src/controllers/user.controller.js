@@ -22,15 +22,15 @@ const registerUser = asyncHandler(async (req, res) => {
   ) {
     throw new apiError(400, "All Fields Are Required");
   }
-  const existedUSer =await User.findOne({
+  const existedUSer = await User.findOne({
     $or: [{ email }, { userName }],
   });
   if (existedUSer) {
     throw new apiError(409, "User Alreadfy registered");
   }
-//   console.log(req.file);
+  //   console.log(req.file);
   const avatarLocalPath = req.file?.path; //files **
-  
+
   if (!avatarLocalPath) {
     throw new apiError(400, "avatar file is missing");
   }
@@ -56,5 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
     .status(201)
     .json(new apiResponse(200, createdUser, "User Registered Sucessfully"));
 });
+
+
 
 export { registerUser };
