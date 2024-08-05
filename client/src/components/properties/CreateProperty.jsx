@@ -1,78 +1,85 @@
 import React, { useState } from "react";
 import AsyncSelect from "react-select/async";
-const SearchBox = () => {
-  const [selectedCategory, setSelectedCategory] = useState("PG");
+import axios from "axios"
+
+const Createproperty = () => {
   const [rentDetails, setRentDetails] = useState({
-    category:"rent",
+    category: "rent",
     location: null,
     bhkType: "",
     budget: "",
   });
   const [pgDetails, setPgDetails] = useState({
-    category:"pg",
+    category: "pg",
     location: null,
     occupancyType: "",
     budget: "",
   });
   const [plotDetails, setPlotDetails] = useState({
-    category:"plot",
+    category: "plot",
     location: null,
     useType: "",
     budget: "",
   });
-console.log(rentDetails);
-  // const logSearchDetails = () => {
-  //   switch (selectedCategory) {
-  //     case "PG":
-  //       console.log(pgDetails);
-  //       break;
-  //     case "Rent":
-  //       console.log(rentDetails);
-  //       break;
-  //     case "Plot":
-  //       console.log(plotDetails);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+  const [selectedCategory, setSelectedCategory] = useState("PG");
+  //api for create property
+  const handleSearch = async () => {
+    const data = {
+      selectedCategory,
+      rentDetails,
+      pgDetails,
+      plotDetails,
+      images: [], // Add your image files here if any
+    };
 
+    try {
+      const response = await axios.post("/api/properties", data, {
+        withCredentials: true,
+      });
+      console.log("Property Created:", response.data);
+    } catch (error) {
+      console.error("Error creating property:", error);
+    }
+  };
   return (
-    <div className="container mx-auto h-screen pt-[20vh] bg-[url('https://plus.unsplash.com/premium_photo-1661962462805-3bdae6487873?q=80&w=1786&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
-      <h1 className="text-4xl font-bold text-center text-white mb-6 font-[roboto]">
-        Find a home away from home
-      </h1>
-      <div className="flex justify-center mb-4">
-        <div className="relative bg-gray-100 rounded-full p-2 flex">
-          <CategoryButton
-            category="PG"
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-          <CategoryButton
-            category="Rent"
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-          <CategoryButton
-            category="Plot"
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
+    <div className="container mx-auto  h-screen pt-[20vh] bg-[url('https://plus.unsplash.com/premium_photo-1661962462805-3bdae6487873?q=80&w=1786&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
+      <div className="flex flex-col space-y-3"  >
+        <h1 className="text-4xl font-bold text-center text-white mb-6 font-[roboto]">
+          {/* Find a home away from home */}
+          Rent Your property Here!
+        </h1>
+        <div className="flex justify-center mb-4">
+          <div className="relative bg-gray-100 rounded-full p-2 flex">
+            <CategoryButton
+              category="PG"
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+            <CategoryButton
+              category="Rent"
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+            <CategoryButton
+              category="Plot"
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+          </div>
         </div>
+        <SearchBar
+          category={selectedCategory}
+          setRentDetails={setRentDetails}
+          setPgDetails={setPgDetails}
+          setPlotDetails={setPlotDetails}
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-red-500 text-white px-4 py-2 rounded-full inline w-[10%] mx-auto"
+        >
+          create
+        </button>
       </div>
-      <SearchBar
-        category={selectedCategory}
-        setRentDetails={setRentDetails}
-        setPgDetails={setPgDetails}
-        setPlotDetails={setPlotDetails}
-      />
-      {/* <button
-        onClick={logSearchDetails}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-      >
-        Log Search Details
-      </button> */}
     </div>
   );
 };
@@ -298,12 +305,9 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
             </select>
           </>
         ) : null}
-        <button className="bg-red-500 text-white px-4 py-2 rounded-full ml-2">
-          Search
-        </button>
       </div>
     </div>
   );
 }
 
-export default SearchBox;
+export default Createproperty;
