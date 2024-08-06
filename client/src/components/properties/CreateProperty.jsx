@@ -33,7 +33,7 @@ const Createproperty = () => {
     };
 
     try {
-      const response = await axios.post("/api/properties", data, {
+      const response = await axios.post("http://localhost:8000/api/v1/property/create", data, {
         withCredentials: true,
       });
       console.log("Property Created:", response.data);
