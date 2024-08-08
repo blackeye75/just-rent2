@@ -3,7 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { login } from "../../store/authSlice";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import {BiSolidShow} from "react-icons/bi"
+import { BiSolidShow } from "react-icons/bi";
+import axios from "axios";
 const Login = () => {
   const [type, setType] = useState("password");
   const navigate = useNavigate();
@@ -23,20 +24,32 @@ const Login = () => {
     }
   };
 
+  const login= async (data)=>{
+    seterror("")
+    try {
+     const logedInUser= await axios.post("http://localhost:8000/api/v1/users/login",data)
+     console.log(logedInUser);
+     window.location.href="/"
+    } catch (error) {
+      
+    }
+  }
+
+  
 
   return (
     <div className="w-full h-screen flex justify-center">
-      <div className="w-[40%] flex flex-col " >
-        <h1 className="text-4xl text-black font-bold uppercase text-center pt-16">
+      <div className="w-[40%] flex flex-col ">
+        <h1 className="text-4xl text-black font-bold uppercase text-center pt-20 pb-10">
           Wlecome Back!
         </h1>
-        <form>
+        <form onSubmit={handleSubmit(login)} >
           <div className="mb-4">
             <label className="block text-gray-700" htmlFor="email">
               Email
             </label>
             <input
-              className="w-full px-3 py-2 outline-none border rounded text-black"
+              className="w-full px-3 py-2 outline-none border-2 rounded text-black"
               type="email"
               id="email"
               name="email"
@@ -54,41 +67,40 @@ const Login = () => {
             )}
           </div>
           <div className="mb-6 ">
-              <label className="block text-gray-700" htmlFor="password">
-                Password
-              </label>
-              <div className="flex items-center border rounded">
-                <input
-                  className="w-full text-black px-3 py-2 outline-none rounded"
-                  type={type}
-                  id="password"
-                  name="password"
-                  placeholder="Enter Your Password"
-                  {...register("password", {
-                    required: "Password is required",
-                    // minLength: {
-                    //   value: 8,
-                    //   message: "Not Safe",
-                    // },
-                  })}
-                />
-                <div onClick={toggelType} className="bg-white" >
-                  <BiSolidShow color="black " size={30} />
-                </div>
+            <label className="block text-gray-700" htmlFor="password">
+              Password
+            </label>
+            <div className="flex items-center border-2 rounded">
+              <input
+                className="w-full text-black px-3 py-2 outline-none rounded"
+                type={type}
+                id="password"
+                name="password"
+                placeholder="Enter Your Password"
+                {...register("password", {
+                  required: "Password is required",
+                  // minLength: {
+                  //   value: 8,
+                  //   message: "Not Safe",
+                  // },
+                })}
+              />
+              <div onClick={toggelType} className="bg-white">
+                <BiSolidShow color="black " size={30} />
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-sm">
-                  {errors.password.message}
-                </p>
-              )}
             </div>
-            <button
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
-              type="submit"
-            >
-              Sign In
-            </button>
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password.message}</p>
+            )}
+          </div>
+          <button
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
+            type="submit"
+          >
+            Sign In
+          </button>
         </form>
+        <Link to="/register" ><p className="text-blue-500 pt-3" >Register Here  </p></Link>
       </div>
     </div>
   );

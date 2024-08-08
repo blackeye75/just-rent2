@@ -30,6 +30,8 @@ const registerUser = asyncHandler(async (req, res) => {
   //return res
 
   const { userName, fullName, email, password } = req.body;
+  // console.log(req.file);
+  // console.log(req.body);
 
   if (
     [fullName, email, userName, password].some((field) => field?.trim() === "")
@@ -40,9 +42,9 @@ const registerUser = asyncHandler(async (req, res) => {
     $or: [{ email }, { userName }],
   });
   if (existedUSer) {
-    throw new apiError(409, "User Alreadfy registered");
+    throw new apiError(409, "User Alreaddy registered");
   }
-  //   console.log(req.file);
+  // console.log(req.file.avatar);
   const avatarLocalPath = req.file?.path; //files **
 
   if (!avatarLocalPath) {
@@ -237,5 +239,5 @@ export {
   chnageCurrentPassword,
   getCurrentUser,
   updateAccountDetails,
-  updateUserAvatar
+  updateUserAvatar,
 };

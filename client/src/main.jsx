@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage.jsx";
 import CreateProperty from "./components/properties/CreateProperty.jsx";
 import store from "./store/store.js";
 import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: "/", element: <HomePage /> },
       { path: "/properties", element: <CreateProperty /> },
       { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
     ],
   },
 ]);
