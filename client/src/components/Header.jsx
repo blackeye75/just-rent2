@@ -1,9 +1,27 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {logout} from "../store/authSlice.js"
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const authStatus = useSelector((state) => state.auth.status);
+  // console.log(authStatus);
+  const dispatch=useDispatch()
+  const handleLogout = async () => {
+    const logoutUser = await axios.post(
+      "http://localhost:8000/api/v1/users/logout",
+      {},
+      {
+        withCredentials: true, // Include credentials (cookies) in the request
+      }
+    );
+    dispatch(logout())
+
+    // console.log(logoutUser);
+  };
   return (
     <nav className="bg-slate-300 shadow-md">
       <div className="max-w-full  px-2 sm:px-4 lg:px-4">
@@ -81,12 +99,43 @@ const Header = () => {
                 >
                   Contact
                 </Link>
-                <Link
-                  to="/login"
-                  className="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-['Roboto_Condensed'] font-bold uppercase"
-                >
-                  Login
-                </Link>
+
+                {authStatus ? (
+                  <Link
+                    to="/"
+                    onClick={handleLogout}
+                    className="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-['Roboto_Condensed'] font-bold uppercase"
+                  >
+                    Logout
+                  </Link>
+                )  : (
+                  <Link 
+                    to="/login"
+                     className="text-gray-800   hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-['Roboto_Condensed'] font-bold uppercase"
+                   >
+                     Login
+                   </Link>
+                 )}
+                {/* {authStatus && (
+                  <Link
+                    to="/"
+                    onClick={handleLogout}
+                    className="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-['Roboto_Condensed'] font-bold uppercase"
+                  >
+                    Logout
+                  </Link>
+                )}
+                {!authStatus && (
+                  <Link
+                    to="/login"
+                    className="text-gray-800   hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-['Roboto_Condensed'] font-bold uppercase"
+                  >
+                    Login
+                  </Link>
+                )} */}
+
+
+              
               </div>
             </div>
           </div>
@@ -98,36 +147,36 @@ const Header = () => {
         id="mobile-menu"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:static absolute z-10 bg-white w-full flex flex-col items-center">
-          <a
+          <Link
             href="#"
             className="text-gray-800 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Home
-          </a>
-          <a
+          </Link>
+          <Link
             href="#"
             className="text-gray-800 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Properties
-          </a>
-          <a
+          </Link>
+          <Link
             href="#"
             className="text-gray-800 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             About
-          </a>
-          <a
+          </Link>
+          <Link
             href="#"
             className="text-gray-800 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Contact
-          </a>
-          <a
+          </Link>
+          <Link
             href="#"
             className="text-gray-800 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Login
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

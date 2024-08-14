@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { login } from "../../store/authSlice";
+import { useNavigate, Link, json } from "react-router-dom";
+import { login as loginAction } from "../../store/authSlice";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { BiSolidShow } from "react-icons/bi";
@@ -8,7 +8,7 @@ import axios from "axios";
 const Login = () => {
   const [type, setType] = useState("password");
   const navigate = useNavigate();
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const [error, seterror] = useState("");
   const {
     register,
@@ -24,18 +24,22 @@ const Login = () => {
     }
   };
 
-  const login= async (data)=>{
-    seterror("")
+  const login = async (data) => {
+    seterror("");
     try {
-     const logedInUser= await axios.post("http://localhost:8000/api/v1/users/login",data)
-     console.log(logedInUser);
-     window.location.href="/"
+      const logedInUser = await axios.post(
+        "http://localhost:8000/api/v1/users/login",
+       { ...data},
+       {withCredentials:true}
+      );
+      const user=logedInUser.data.data.user
+      // console.log( logedInUser);
+      if (user) dispatch(loginAction(user));
+      navigate("/");
     } catch (error) {
-      
+      console.log(error);
     }
-  }
-
-  
+  };
 
   return (
     <div className="w-full h-screen flex justify-center">
@@ -43,7 +47,7 @@ const Login = () => {
         <h1 className="text-4xl text-black font-bold uppercase text-center pt-20 pb-10">
           Wlecome Back!
         </h1>
-        <form onSubmit={handleSubmit(login)} >
+        <form onSubmit={handleSubmit(login)}>
           <div className="mb-4">
             <label className="block text-gray-700" htmlFor="email">
               Email
@@ -100,7 +104,9 @@ const Login = () => {
             Sign In
           </button>
         </form>
-        <Link to="/register" ><p className="text-blue-500 pt-3" >Register Here  </p></Link>
+        <Link className="w-fit" to="/register">
+          <span className="text-blue-500 pt-3">Register Here </span>
+        </Link>
       </div>
     </div>
   );

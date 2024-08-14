@@ -81,7 +81,8 @@ const loginUser = asyncHandler(async (req, res) => {
   //access token and refresh token generate and send to user
   //send it in req cookie
   const { userName, email, password } = req.body;
-  if (!userName && !email) {
+  // console.log(email);
+  if (!email) {
     throw new apiError(400, "Username or email is required");
   }
   const user = await User.findOne({
@@ -118,7 +119,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  // console.log(req.user);
+  // console.log("userLogout", req.user);
   await User.findByIdAndUpdate(
     req.user._id,
     { $unset: { refreshToken: 1 } },
