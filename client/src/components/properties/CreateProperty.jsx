@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import AsyncSelect from "react-select/async";
-import axios from "axios"
+import axios from "axios";
 
 const Createproperty = () => {
+  
   const [rentDetails, setRentDetails] = useState({
     category: "rent",
     location: null,
@@ -23,7 +24,9 @@ const Createproperty = () => {
   });
   const [selectedCategory, setSelectedCategory] = useState("PG");
   //api for create property
-  const handleSearch = async () => {
+  
+  const handleAddProperty = async (e) => {
+    e.preventDefault();
     const data = {
       selectedCategory,
       rentDetails,
@@ -31,11 +34,23 @@ const Createproperty = () => {
       plotDetails,
       images: [], // Add your image files here if any
     };
+    const formData = new FormData();
+    images.forEach((images) => {
+      formData.append("images", images);
+    });
 
     try {
-      const response = await axios.post("http://localhost:8000/api/v1/property/create", data, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/property/create",
+        formData,
+        data,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log("Property Created:", response.data);
     } catch (error) {
       console.error("Error creating property:", error);
@@ -43,7 +58,7 @@ const Createproperty = () => {
   };
   return (
     <div className="container mx-auto  h-screen pt-[20vh] bg-[url('https://plus.unsplash.com/premium_photo-1661962462805-3bdae6487873?q=80&w=1786&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
-      <div className="flex flex-col space-y-3"  >
+      <div className="flex flex-col space-y-3">
         <h1 className="text-4xl font-bold text-center text-white mb-6 font-[roboto]">
           {/* Find a home away from home */}
           Rent Your property Here!
@@ -74,7 +89,7 @@ const Createproperty = () => {
           setPlotDetails={setPlotDetails}
         />
         <button
-          onClick={handleSearch}
+          onClick={handleAddProperty}
           className="bg-red-500 text-white px-4 py-2 rounded-full inline w-[10%] mx-auto"
         >
           create
@@ -117,6 +132,7 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
     { value: "Kolkata", label: "Kolkata" },
     { value: "Hyderabad", label: "Hyderabad" },
   ];
+  const [images, setImages] = useState([]);
 
   const loadOptions = (inputValue, callback) => {
     // GeoNames API call
@@ -195,9 +211,13 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
       useType: event.target.value,
     }));
   };
+  const handleFileChange = (e) => {
+    setImages([...e.target.files]);
+  };
+ 
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center justify-center">
       <div className="relative w-full md:w-1/2 bg-gray-100 p-3 border rounded-full flex items-center">
         {category === "Rent" ? (
           <>
@@ -222,7 +242,7 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
               <option value="House">House</option>
               <option value="Villa">Villa</option>
             </select>
-            <select
+            {/* <select
               className="border-2 border-gray-300 rounded-full p-2 w-1/3 mr-2"
               onChange={handleBudgetChange}
             >
@@ -234,7 +254,14 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
               <option value="100000">1 lakh</option>
               <option value="300000">3 lakh</option>
               <option value="400000">4 lakh</option>
-            </select>
+            </select> */}
+            {/* //renting and price */}
+            <input
+              type="number"
+              className="border p-1 h-full"
+              onChange={handleBudgetChange}
+              placeholder="Monthly Rent"
+            />
           </>
         ) : category === "PG" ? (
           <>
@@ -257,7 +284,7 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
               <option value="Shared">Shared</option>
               <option value="Alone">Alone</option>
             </select>
-            <select
+            {/* <select
               className="border-2 border-gray-300 rounded-full p-2 w-1/3 mr-2"
               onChange={handleBudgetChange}
             >
@@ -269,7 +296,13 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
               <option value="100000">1 lakh</option>
               <option value="300000">3 lakh</option>
               <option value="400000">4 lakh</option>
-            </select>
+            </select> */}
+            <input
+              type="number"
+              className="border p-1 h-full"
+              onChange={handleBudgetChange}
+              placeholder="Monthly Rent"
+            />
           </>
         ) : category === "Plot" ? (
           <>
@@ -290,7 +323,7 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
               <option value="Commercial">Commercial</option>
               <option value="Personal">Personal</option>
             </select>
-            <select
+            {/* <select
               className="border-2 border-gray-300 rounded-full p-2 w-1/3 mr-2"
               onChange={handleBudgetChange}
             >
@@ -302,10 +335,25 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
               <option value="100000">1 lakh</option>
               <option value="300000">3 lakh</option>
               <option value="400000">4 lakh</option>
-            </select>
+            </select> */}
+            <input
+              type="number"
+              className="border p-1 h-full"
+              onChange={handleBudgetChange}
+              placeholder="Monthly Rent"
+            />
           </>
         ) : null}
       </div>
+      <input
+        type="file"
+        multiple
+        onChange={handleFileChange}
+        accept="image/*"
+        className="bg-white mt-3 rounded-md"
+        name=""
+        id=""
+      />
     </div>
   );
 }

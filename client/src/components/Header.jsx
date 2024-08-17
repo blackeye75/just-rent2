@@ -3,13 +3,13 @@ import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import {logout} from "../store/authSlice.js"
+import { logout } from "../store/authSlice.js";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const authStatus = useSelector((state) => state.auth.status);
   // console.log(authStatus);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const handleLogout = async () => {
     const logoutUser = await axios.post(
       "http://localhost:8000/api/v1/users/logout",
@@ -18,7 +18,7 @@ const Header = () => {
         withCredentials: true, // Include credentials (cookies) in the request
       }
     );
-    dispatch(logout())
+    dispatch(logout());
 
     // console.log(logoutUser);
   };
@@ -108,14 +108,14 @@ const Header = () => {
                   >
                     Logout
                   </Link>
-                )  : (
-                  <Link 
+                ) : (
+                  <Link
                     to="/login"
-                     className="text-gray-800   hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-['Roboto_Condensed'] font-bold uppercase"
-                   >
-                     Login
-                   </Link>
-                 )}
+                    className="text-gray-800   hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-['Roboto_Condensed'] font-bold uppercase"
+                  >
+                    Login
+                  </Link>
+                )}
                 {/* {authStatus && (
                   <Link
                     to="/"
@@ -133,9 +133,6 @@ const Header = () => {
                     Login
                   </Link>
                 )} */}
-
-
-              
               </div>
             </div>
           </div>

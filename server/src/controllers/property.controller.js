@@ -33,7 +33,7 @@ const createProperty = asyncHandler(async (req, res) => {
   }
 
   //   const imagesLoaclPath = req.files?.path;
-  const imagePaths = req.files.map((file) => file.path);
+  const imagePaths = req.files?.map((file) => file.path);
 
   // Upload images to Cloudinary if provided
   const uploadedImages =

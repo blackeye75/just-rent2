@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link, json } from "react-router-dom";
 import { login as loginAction } from "../../store/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { BiSolidShow } from "react-icons/bi";
 import axios from "axios";
@@ -9,6 +9,7 @@ const Login = () => {
   const [type, setType] = useState("password");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // const selector = useSelector();
   const [error, seterror] = useState("");
   const {
     register,
@@ -29,12 +30,13 @@ const Login = () => {
     try {
       const logedInUser = await axios.post(
         "http://localhost:8000/api/v1/users/login",
-       { ...data},
-       {withCredentials:true}
+        { ...data },
+        { withCredentials: true }
       );
-      const user=logedInUser.data.data.user
+      const user = logedInUser.data.data.user;
       // console.log( logedInUser);
       if (user) dispatch(loginAction(user));
+      // selector((state) => console.log(state));
       navigate("/");
     } catch (error) {
       console.log(error);
