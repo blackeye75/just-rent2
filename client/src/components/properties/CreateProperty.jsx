@@ -3,7 +3,7 @@ import AsyncSelect from "react-select/async";
 import axios from "axios";
 
 const Createproperty = () => {
-  
+
   const [rentDetails, setRentDetails] = useState({
     category: "rent",
     location: null,
@@ -24,7 +24,7 @@ const Createproperty = () => {
   });
   const [selectedCategory, setSelectedCategory] = useState("PG");
   //api for create property
-  
+
   const handleAddProperty = async (e) => {
     e.preventDefault();
     const data = {
@@ -32,7 +32,7 @@ const Createproperty = () => {
       rentDetails,
       pgDetails,
       plotDetails,
-      images: [], // Add your image files here if any
+      // images: [...images], // Add your image files here if any
     };
     const formData = new FormData();
     images.forEach((images) => {
@@ -132,7 +132,6 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
     { value: "Kolkata", label: "Kolkata" },
     { value: "Hyderabad", label: "Hyderabad" },
   ];
-  const [images, setImages] = useState([]);
 
   const loadOptions = (inputValue, callback) => {
     // GeoNames API call
@@ -214,7 +213,6 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
   const handleFileChange = (e) => {
     setImages([...e.target.files]);
   };
- 
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -359,3 +357,4 @@ function SearchBar({ category, setRentDetails, setPgDetails, setPlotDetails }) {
 }
 
 export default Createproperty;
+

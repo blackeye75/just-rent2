@@ -8,10 +8,10 @@ import { User } from "../models/user.model.js";
 const createProperty = asyncHandler(async (req, res) => {
   // console.log(req.user);
   const user = await User.findById(req.user._id);
-  const { selectedCategory, rentDetails, pgDetails, plotDetails, location } =
+  const { category, rentDetails, pgDetails, plotDetails, location } =
     req.body;
   const userId = user._id;
-  // console.log(user);
+  console.log(category);
   if (!userId) {
     throw new apiError(400, "User ID is required");
   }
