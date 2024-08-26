@@ -105,17 +105,18 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
+  console.log(req.cookies);
   return res
-    .status(200)
-    .cookie("accessToken", accessToken, option)
-    .cookie("refreshToken", refreshToken, option)
-    .json(
-      new apiResponse(
-        200,
-        { user: loggedInUser, accessToken, refreshToken },
-        "User Logged In Successfully"
+  .status(200)
+  .cookie("accessToken", accessToken, option)
+  .cookie("refreshToken", refreshToken, option)
+  .json(
+    new apiResponse(
+      200,
+      { user: loggedInUser, accessToken, refreshToken },
+      "User Logged In Successfully"
       )
-    );
+      );
 });
 
 const logoutUser = asyncHandler(async (req, res) => {

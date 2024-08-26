@@ -4,10 +4,11 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 export const verifiyJWT = asyncHandler(async (req, res, next) => {
   try {
-    // console.log("Cookei",req.cookies);
+    console.log("Cookei",req.cookies.accessToken);
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
+      console.log(token);
     if (!token) {
       throw new apiError(401, "Unauthorized request");
     }
