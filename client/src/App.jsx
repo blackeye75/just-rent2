@@ -15,7 +15,7 @@ function App() {
   }, []);
   const currentUser = async () => {
     await axios
-      .get("http://localhost:8000/api/v1/users/current-user")
+      .get("http://localhost:8000/api/v1/users/current-user",{withCredentials:true  })
       .then((data) => console.log(data));
   };
   return (
