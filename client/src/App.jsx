@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { login, logout } from "./store/authSlice";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -15,10 +16,20 @@ function App() {
   }, []);
   const currentUser = async () => {
     await axios
-      .get("http://localhost:8000/api/v1/users/current-user",{withCredentials:true  })
-      .then((data) => console.log(data));
+      .get("http://localhost:8000/api/v1/users/current-user", {
+        withCredentials: true,
+      })
+      .then((data) => {
+        // console.log(data.data.data);
+        if (data) {
+          dispatch(login( data.data.data ));
+        } else {
+          dispatch(logout());
+        }
+      })
+      .finally(() => setLoading(false));
   };
-  return (
+  return !loading ? (
     <>
       <div className="w-full block">
         <Header />
@@ -28,6 +39,8 @@ function App() {
         <Footer />
       </div>
     </>
+  ) : (
+    "Loading..."
   );
 }
 
