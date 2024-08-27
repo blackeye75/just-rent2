@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
   status: localStorage.getItem("authStatus") === "true",
-  userData: JSON.parse(localStorage.getItem("user")) || null,
+  userData:  null,
 };
 
 const authSlice = createSlice({
