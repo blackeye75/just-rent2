@@ -6,14 +6,16 @@ import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { login, logout } from "./store/authSlice";
+import { refreshTokenIfNeeded } from "./store/authSlice";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(refreshTokenIfNeeded());
     currentUser();
-  }, []);
+  }, [dispatch]);
   const currentUser = async () => {
     await axios
       .get("http://localhost:8000/api/v1/users/current-user", {
@@ -22,7 +24,7 @@ function App() {
       .then((data) => {
         // console.log(data.data.data);
         if (data) {
-          dispatch(login( data.data.data ));
+          dispatch(login(data.data.data));
         } else {
           dispatch(logout());
         }
